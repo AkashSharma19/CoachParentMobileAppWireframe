@@ -176,3 +176,69 @@
   text-align: center;
   padding: 40px;
 }
+
+/* GPA Trend Chart Styles */
+.gpa-trend-section {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chart-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chart-container {
+  width: 100%;
+  padding-top: 10px;
+}
+
+.gpa-chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart-grid-line {
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 1;
+}
+
+.chart-path-animated {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawPath 2s ease-out forwards;
+}
+
+@keyframes drawPath {
+  to { stroke-dashoffset: 0; }
+}
+
+.chart-dot {
+  fill: var(--bg-main);
+  stroke: var(--accent-primary);
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.chart-dot.active {
+  fill: var(--accent-secondary);
+  stroke: white;
+  r: 6;
+  filter: drop-shadow(0 0 8px var(--accent-secondary));
+}
+
+.chart-label {
+  fill: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+.chart-label.current {
+  fill: var(--text-primary);
+  font-weight: 700;
+}

@@ -80,6 +80,50 @@ const Grades = ({ onBack }) => {
         </div>
       </div>
 
+      <div className="gpa-trend-section glass-card animate-fade-in">
+        <div className="chart-header">
+          <h3 className="heading-m">Academic Progress</h3>
+          <span className="text-micro">GPA Trend (Last 4 Terms)</span>
+        </div>
+        <div className="chart-container">
+          <svg viewBox="0 0 400 120" className="gpa-chart">
+            {/* Grid Lines */}
+            <line x1="0" y1="20" x2="400" y2="20" className="chart-grid-line" />
+            <line x1="0" y1="50" x2="400" y2="50" className="chart-grid-line" />
+            <line x1="0" y1="80" x2="400" y2="80" className="chart-grid-line" />
+            
+            {/* The Path */}
+            <path 
+              d="M 50,80 Q 100,20 150,50 T 250,30 T 350,20" 
+              fill="none" 
+              stroke="url(#chartGradient)" 
+              strokeWidth="4" 
+              strokeLinecap="round"
+              className="chart-path-animated"
+            />
+            
+            {/* Data Points */}
+            <circle cx="50" cy="80" r="5" className="chart-dot" />
+            <circle cx="150" cy="50" r="5" className="chart-dot" />
+            <circle cx="250" cy="30" r="5" className="chart-dot" />
+            <circle cx="350" cy="20" r="5" className="chart-dot active" />
+
+            {/* Labels */}
+            <text x="50" y="110" className="chart-label">S1</text>
+            <text x="150" y="110" className="chart-label">S2</text>
+            <text x="250" y="110" className="chart-label">S3</text>
+            <text x="350" y="110" className="chart-label current">Current</text>
+
+            <defs>
+              <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#8b5cf6" />
+                <stop offset="100%" stopColor="#ec4899" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+
       <div className="grades-selection-header">
         <div className="selector-card glass-card">
           <span className="text-micro">Select Term</span>
