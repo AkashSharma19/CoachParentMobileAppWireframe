@@ -4,6 +4,7 @@ import './Grades.css';
 const Grades = ({ onBack }) => {
   const [selectedTerm, setSelectedTerm] = useState('Term 1');
   const [expandedCourse, setExpandedCourse] = useState(null);
+  const [activeMetric, setActiveMetric] = useState('gpa');
 
   const terms = ['Term 1', 'Term 2'];
 
@@ -54,9 +55,38 @@ const Grades = ({ onBack }) => {
     }
   };
 
+  const trendData = {
+    gpa: {
+      title: 'Academic Progress',
+      subtitle: 'GPA Trend (Last 4 Terms)',
+      path: "M 50,80 Q 100,20 150,50 T 250,30 T 350,20",
+      points: [
+        { cx: 50, cy: 80, label: 'S1' },
+        { cx: 150, cy: 50, label: 'S2' },
+        { cx: 250, cy: 30, label: 'S3' },
+        { cx: 350, cy: 20, label: 'Current' }
+      ],
+      color: 'url(#gpaGradient)'
+    },
+    attendance: {
+      title: 'Attendance Patterns',
+      subtitle: 'Presence % (Last 4 Terms)',
+      path: "M 50,40 Q 100,60 150,30 T 250,50 T 350,45",
+      points: [
+        { cx: 50, cy: 40, label: 'S1' },
+        { cx: 150, cy: 30, label: 'S2' },
+        { cx: 250, cy: 50, label: 'S3' },
+        { cx: 350, cy: 45, label: 'Current' }
+      ],
+      color: 'url(#attendanceGradient)'
+    }
+  };
+
   const toggleCourse = (id) => {
     setExpandedCourse(expandedCourse === id ? null : id);
   };
+
+  const activeTrend = trendData[activeMetric];
 
   return (
     <div className="grades-container animate-fade-in">
@@ -69,55 +99,73 @@ const Grades = ({ onBack }) => {
         <span className="icon">📊</span>
         <p className="text-small">New Grade posted in Advanced Mathematics: Calculus Quiz (95/100).</p>
       </div>
+
       <div className="overall-summary-grid">
-        <div className="summary-card glass-card">
+        <div 
+          className={`summary-card glass-card clickable-metric ${activeMetric === 'gpa' ? 'active' : ''}`}
+          onClick={() => setActiveMetric('gpa')}
+        >
           <span className="text-small">Cumulative GPA</span>
           <h2 className="summary-val text-accent">3.92</h2>
         </div>
-        <div className="summary-card glass-card">
+        <div 
+          className={`summary-card glass-card clickable-metric ${activeMetric === 'attendance' ? 'active' : ''}`}
+          onClick={() => setActiveMetric('attendance')}
+        >
           <span className="text-small">Overall Attendance</span>
           <h2 className="summary-val text-success">96.4%</h2>
         </div>
       </div>
 
-      <div className="gpa-trend-section glass-card animate-fade-in">
+      <div className="gpa-trend-section glass-card animate-fade-in" key={activeMetric}>
         <div className="chart-header">
-          <h3 className="heading-m">Academic Progress</h3>
-          <span className="text-micro">GPA Trend (Last 4 Terms)</span>
+          <h3 className="heading-m">{activeTrend.title}</h3>
+          <span className="text-micro">{activeTrend.subtitle}</span>
         </div>
         <div className="chart-container">
           <svg viewBox="0 0 400 120" className="gpa-chart">
-            {/* Grid Lines */}
             <line x1="0" y1="20" x2="400" y2="20" className="chart-grid-line" />
             <line x1="0" y1="50" x2="400" y2="50" className="chart-grid-line" />
             <line x1="0" y1="80" x2="400" y2="80" className="chart-grid-line" />
             
-            {/* The Path */}
             <path 
-              d="M 50,80 Q 100,20 150,50 T 250,30 T 350,20" 
+              d={activeTrend.path} 
               fill="none" 
-              stroke="url(#chartGradient)" 
+              stroke={activeTrend.color} 
               strokeWidth="4" 
               strokeLinecap="round"
               className="chart-path-animated"
             />
             
-            {/* Data Points */}
-            <circle cx="50" cy="80" r="5" className="chart-dot" />
-            <circle cx="150" cy="50" r="5" className="chart-dot" />
-            <circle cx="250" cy="30" r="5" className="chart-dot" />
-            <circle cx="350" cy="20" r="5" className="chart-dot active" />
+            {activeTrend.points.map((p, i) => (
+              <circle 
+                key={i} 
+                cx={p.cx} 
+                cy={p.cy} 
+                r="5" 
+                className={`chart-dot ${i === activeTrend.points.length - 1 ? 'active' : ''}`} 
+              />
+            ))}
 
-            {/* Labels */}
-            <text x="50" y="110" className="chart-label">S1</text>
-            <text x="150" y="110" className="chart-label">S2</text>
-            <text x="250" y="110" className="chart-label">S3</text>
-            <text x="350" y="110" className="chart-label current">Current</text>
+            {activeTrend.points.map((p, i) => (
+              <text 
+                key={i} 
+                x={p.cx} 
+                y="110" 
+                className={`chart-label ${i === activeTrend.points.length - 1 ? 'current' : ''}`}
+              >
+                {p.label}
+              </text>
+            ))}
 
             <defs>
-              <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <linearGradient id="gpaGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#8b5cf6" />
                 <stop offset="100%" stopColor="#ec4899" />
+              </linearGradient>
+              <linearGradient id="attendanceGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#10b981" />
+                <stop offset="100%" stopColor="#3b82f6" />
               </linearGradient>
             </defs>
           </svg>

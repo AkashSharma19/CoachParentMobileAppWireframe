@@ -35,6 +35,23 @@
 .text-accent { color: var(--accent-primary); }
 .text-success { color: #10b981; }
 
+.clickable-metric {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.clickable-metric:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.clickable-metric.active {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--border-glass);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
 .grades-selection-header {
   display: flex;
   gap: 12px;
